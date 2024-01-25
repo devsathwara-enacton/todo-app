@@ -22,11 +22,29 @@ export const remove = async (id: number): Promise<Todos> => {
     .execute();
   return result;
 };
-export const fetchAll = async (): Promise<Todos> => {
-  const result: any = await db.selectFrom("todos").selectAll().execute();
+export const fetchAll = async (
+  is_completed: number | null,
+  is_pinned: number | null
+): Promise<Todos> => {
+  const result: any = sql<any>`SELECT *
+  FROM todos
+  WHERE 
+    (is_completed IS NOT NULL OR is_pinned IS NOT NULL)
+    AND (${
+      is_completed !== undefined
+        ? sql`\`is_completed\` = ${is_completed}`
+        : sql`1`
+    })
+    AND (${
+      is_pinned !== undefined ? sql`\`is_pinned\` = ${is_pinned}` : sql`1`
+    })
+  ORDER BY id; -- Adjust your ordering condition as needed
+  `.execute(db);
+  console.log(result);
   return result;
 };
 export const filterCompleted = async (completed: number): Promise<Todos> => {
+  console.log(completed);
   const result: any = await db
     .selectFrom("todos")
     .selectAll()
@@ -40,6 +58,7 @@ export const filterPinned = async (pinned: number): Promise<Todos> => {
     .selectAll()
     .where("is_pinned", "=", pinned)
     .execute();
+
   return result;
 };
 export const filterColor = async (color: string): Promise<Todos> => {

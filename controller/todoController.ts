@@ -8,7 +8,7 @@ interface InsertRequestBody {
   description: string;
   is_completed: number;
   is_pinned: number;
-  due_date: Date;
+  due_date: string;
 }
 export const insert = async (
   req: FastifyRequest,
@@ -17,6 +17,7 @@ export const insert = async (
   const uid = req.session.get("uid");
   const { fid, title, description, is_completed, is_pinned, due_date } =
     req.body as InsertRequestBody;
+
   let data: InsertRequestBody = {
     uid: uid,
     fid: fid,
@@ -41,25 +42,25 @@ export const fetch = async (
   req: FastifyRequest,
   reply: FastifyReply
 ): Promise<void> => {
-  const is_completed: any = req.params;
-  const is_pinned: any = req.params;
-  if (is_completed) {
-    const todos = await todo.filterCompleted(is_completed);
+  const is_completed: any = req.query;
+  const is_pinned: any = req.query;
+  if (is_completed !== null) {
+    const todos = await todo.fetchAll(is_completed, null);
     if (!todos) {
       return reply.status(404).send({ message: "Not found" });
     } else {
       return reply.status(200).send({ success: true, todos: todos });
     }
   }
-  if (is_pinned) {
-    const todos = await todo.filterPinned(is_pinned);
+  if (is_pinned !== null) {
+    const todos = await todo.fetchAll(null, is_pinned);
     if (!todos) {
       return reply.status(404).send({ message: "Not found" });
     } else {
       return reply.status(200).send({ success: true, todos: todos });
     }
   } else {
-    const todos = await todo.fetchAll();
+    const todos = await todo.fetchAll(null, null);
     if (!todos) {
       return reply.status(404).send({ message: "Not found" });
     } else {
