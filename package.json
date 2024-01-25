@@ -1,0 +1,29 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/secure-session": "^7.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.1",
+    "fastify": "^4.25.2",
+    "kysely": "^0.27.2",
+    "mysql": "^2.18.1",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "kysely-codegen": "^0.11.0",
+    "mysql2": "^3.8.0"
+  }
+}
