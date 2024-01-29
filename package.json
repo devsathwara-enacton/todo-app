@@ -15,8 +15,10 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.1",
     "fastify": "^4.25.2",
+    "fastify-next-auth": "^0.7.0",
     "kysely": "^0.27.2",
     "mysql": "^2.18.1",
+    "passport-google-oauth20": "^2.0.0",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "typescript": "^5.3.3",
@@ -24,6 +26,8 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/passport-google-oauth20": "^2.0.14",
+    "fastify-passport": "^0.6.0",
     "kysely-codegen": "^0.11.0",
     "mysql2": "^3.8.0"
   }

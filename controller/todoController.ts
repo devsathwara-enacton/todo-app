@@ -2,27 +2,37 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { todo } from "../models";
 import { Todos } from "../database/db";
 import { serializeBoolean, serializeDate } from "../utils/serializer";
-interface InsertRequestBody {
-  uid: number;
-  fid: number;
-  title: string;
-  description: string;
-  is_completed: number;
-  is_pinned: number;
-  due_date: string;
-}
+import { todosSchema } from "../utils/validation";
+
+// const InsertRequestBodySchema = z.object({
+//   uid: z.number().int(),
+//   fid: z.number().int(),
+//   title: z.string().max(255),
+//   description: z.string().max(255),
+//   tags: z.string(), // Adjust as needed
+//   is_completed: z.boolean(),
+//   is_pinned: z.boolean(),
+//   due_date: z.string().max(255), // Adjust as needed
+
+// });
 export const insert = async (
   req: FastifyRequest,
   reply: FastifyReply
 ): Promise<void> => {
-  const uid = req.session.get("uid");
+  const uid: number = req.session.get("uid");
   const { fid, title, description, is_completed, is_pinned, due_date } =
-    req.body as InsertRequestBody;
-  let data: InsertRequestBody = {
-    uid: uid,
-    fid: fid,
+    todosSchema.parse(req.body);
+  const { tags }: any = req.body;
+  const checkFid = await todo.checkFid(fid);
+  if (!checkFid) {
+    return reply.code(404).send("Not found Folder");
+  }
+  let data: any = {
+    uid: Number(uid),
+    fid: Number(fid),
     title: title,
     description: description,
+    tags: JSON.stringify(tags),
     is_completed: is_completed,
     is_pinned: is_pinned,
     due_date: due_date,

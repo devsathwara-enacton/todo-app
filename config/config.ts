@@ -14,5 +14,8 @@ export const config = {
       password: process.env.DATABASE_PASSWORD,
       port: Number(process.env.DATABASE_PORT),
     },
+    date: {
+      dateFormat: "yyyy-mm-dd",
+    },
   },
 };

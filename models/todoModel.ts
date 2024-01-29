@@ -64,3 +64,11 @@ export const folder = async (uid: number): Promise<any> => {
     .execute();
   return query;
 };
+export const checkFid = async (fid: number): Promise<any> => {
+  const data = await db
+    .selectFrom("folders")
+    .selectAll()
+    .where("id", "=", fid)
+    .executeTakeFirst();
+  return data;
+};
