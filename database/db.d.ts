@@ -15,27 +15,28 @@ export interface Folders {
 
 export interface Todos {
   completed_at: Generated<Date | null>;
-  created_at: Generated<number | null>;
+  created_at: Generated<Date | null>;
   description: Generated<string | null>;
-  due_date: Generated<Date | null>;
+  due_date: Generated<string | null>;
   fid: number;
   id: Generated<number>;
   is_completed: Generated<number | null>;
   is_pinned: Generated<number | null>;
+  tags: Generated<string | null>;
   title: Generated<string | null>;
   uid: number;
-  updated_at: Generated<number | null>;
+  updated_at: Generated<Date | null>;
 }
 
 export interface Users {
-  avtar: Generated<string | null> | null | undefined;
+  avtar: Generated<string | null>;
   created_at: Generated<Date | null>;
   email: string;
   first_name: Generated<string | null>;
   id: Generated<number>;
   last_name: Generated<string | null>;
-  password: Generated<string | null | undefined>;
-  theme: Generated<"" | "dark" | "light" | null>;
+  password: Generated<string | null>;
+  theme: Generated<"" | "" | "dark" | "light" | null>;
   updated_at: Generated<Date | null>;
 }
 

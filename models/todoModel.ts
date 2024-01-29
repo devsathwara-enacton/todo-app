@@ -1,6 +1,6 @@
 import { InsertResult, sql } from "kysely";
 import { db } from "../database/database";
-import { Todos } from "../database/db";
+import { Folders, Todos } from "../database/db";
 
 export const insert = async (data: any): Promise<InsertResult> => {
   const result: any = await db.insertInto("todos").values(data).execute();
@@ -23,49 +23,44 @@ export const remove = async (id: number): Promise<Todos> => {
   return result;
 };
 export const fetchAll = async (
-  is_completed: number | null,
-  is_pinned: number | null
-): Promise<Todos> => {
-  const result: any = sql<any>`SELECT *
-  FROM todos
-  WHERE 
-    (is_completed IS NOT NULL OR is_pinned IS NOT NULL)
-    AND (${
-      is_completed !== undefined
-        ? sql`\`is_completed\` = ${is_completed}`
-        : sql`1`
-    })
-    AND (${
-      is_pinned !== undefined ? sql`\`is_pinned\` = ${is_pinned}` : sql`1`
-    })
-  ORDER BY id; -- Adjust your ordering condition as needed
-  `.execute(db);
-  console.log(result);
+  is_completed: number,
+  is_pinned: number,
+  uid: number
+): Promise<Todos[]> => {
+  let query = db.selectFrom("todos").selectAll().where("uid", "=", uid);
+  if (is_completed !== null && is_completed !== undefined) {
+    query = query.where("is_completed", "=", is_completed);
+  }
+  if (is_pinned !== null && is_pinned !== undefined) {
+    query = query.where("is_pinned", "=", is_pinned);
+  } else {
+    query = query.orderBy("id asc");
+  }
+  const result: any = await query.execute();
   return result;
 };
-export const filterCompleted = async (completed: number): Promise<Todos> => {
-  console.log(completed);
-  const result: any = await db
-    .selectFrom("todos")
-    .selectAll()
-    .where("is_completed", "=", completed)
-    .execute();
-  return result;
-};
-export const filterPinned = async (pinned: number): Promise<Todos> => {
-  const result: any = await db
-    .selectFrom("todos")
-    .selectAll()
-    .where("is_pinned", "=", pinned)
-    .execute();
 
+export const filterColor = async (
+  color: string,
+  uid: number
+): Promise<Todos[]> => {
+  const query = db
+    .selectFrom("todos")
+    .selectAll()
+    .innerJoin("folders", "todos.fid", "folders.id")
+    .where("folders.color", "=", `${color}`)
+    .where("folders.uid", "=", uid)
+    .where("todos.uid", "=", uid);
+  const result: any = await query.execute();
   return result;
 };
-export const filterColor = async (color: string): Promise<Todos> => {
-  const result: any = sql<any>`
-  SELECT t2.*
-FROM todos t2
-JOIN folders t1 ON t2.fid = t1.id
-WHERE t1.color = ${color};`.execute(db);
-  return result;
+
+export const folder = async (uid: number): Promise<any> => {
+  const query = db
+    .selectFrom(["todos", "folders"])
+    .selectAll()
+    .where("folders.uid", "=", uid)
+    .where("todos.uid", "=", uid)
+    .execute();
+  return query;
 };

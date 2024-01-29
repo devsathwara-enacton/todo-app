@@ -10,7 +10,6 @@ interface RegisterRequestBody {
   avtar: string;
   theme: string;
 }
-
 export const register = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
     const { email, firstName, lastName, password, avtar, theme } =
@@ -21,7 +20,7 @@ export const register = async (req: FastifyRequest, reply: FastifyReply) => {
       first_name: firstName,
       last_name: lastName,
       password: hashPassword,
-      avtar: avtar,
+      avtar: avtar.toString(),
       theme: theme,
       created_at: new Date(),
     };
