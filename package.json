@@ -13,10 +13,13 @@
     "@fastify/cookie": "^9.3.1",
     "@fastify/passport": "^2.4.0",
     "@fastify/secure-session": "^7.1.0",
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^2.1.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.1",
     "fastify": "^4.25.2",
     "fastify-next-auth": "^0.7.0",
+    "fastify-swagger": "^5.2.0",
     "kysely": "^0.27.2",
     "mysql": "^2.18.1",
     "passport-google-oauth20": "^2.0.0",
@@ -27,9 +30,11 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/passport-github": "^1.1.12",
     "@types/passport-google-oauth20": "^2.0.14",
     "fastify-passport": "^0.6.0",
     "kysely-codegen": "^0.11.0",
-    "mysql2": "^3.8.0"
+    "mysql2": "^3.8.0",
+    "passport-github": "^1.1.0"
   }
 }
