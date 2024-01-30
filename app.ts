@@ -9,28 +9,31 @@ import fastifyPassport from "@fastify/passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github";
 import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
+
 const app: FastifyInstance = fastify({ logger: true });
-const options = {
-  routePrefix: "/documentation",
-  exposeRoute: true,
+const swaggerOptions = {
   swagger: {
     info: {
-      title: "Fastify API",
-      description:
-        "Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger",
+      title: "Todo Api",
+      description: "My Description.",
       version: "1.0.0",
     },
-    externalDocs: {
-      url: "https://swagger.io",
-      description: "Find more info here",
-    },
-    host: "127.0.0.1",
+    host: "127.0.0.1:3000",
     schemes: ["http"],
     consumes: ["application/json"],
     produces: ["application/json"],
+    tags: [{ name: "Default", description: "Default" }],
   },
 };
-app.register(require("@fastify/swagger"), options);
+
+const swaggerUiOptions = {
+  routePrefix: "/docs",
+  exposeRoute: true,
+};
+
+app.register(fastifySwagger, swaggerOptions);
+app.register(fastifySwaggerUi, swaggerUiOptions);
 
 app.register(fastifyCookie);
 app.register(fastifySecureSession, {

@@ -70,7 +70,8 @@ export const fetch = async (
     }
   } else {
     const todos = await todo.fetchAll(is_completed, is_pinned, uid);
-    if (!todos) {
+
+    if (todos.length == 0) {
       return reply.status(404).send({ message: "Not found" });
     } else {
       return reply.status(200).send({

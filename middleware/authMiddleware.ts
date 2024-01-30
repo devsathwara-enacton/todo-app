@@ -6,6 +6,7 @@ export const isAuthenticated = (
   done: () => void
 ) => {
   let email = req.session.get("email");
+
   if (!email) {
     return reply.status(401).send({ error: "Not authenticated" });
   } else {
