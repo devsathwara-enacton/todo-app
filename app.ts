@@ -10,7 +10,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
-
+import cors from "@fastify/cors";
 const app: FastifyInstance = fastify({ logger: true });
 const swaggerOptions = {
   swagger: {
@@ -34,6 +34,7 @@ const swaggerUiOptions = {
 
 app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, swaggerUiOptions);
+app.register(cors);
 
 app.register(fastifyCookie);
 app.register(fastifySecureSession, {
@@ -98,6 +99,12 @@ app.register(fastifyPassport.initialize());
 app.register(fastifyPassport.secureSession());
 app.register(import("./routes/userRoutes"), { prefix: "/api/user" });
 app.register(import("./routes/todoRoutes"), { prefix: "/api/todo" });
+
+app.setErrorHandler((error, request, reply) => {
+  console.log(error.toString());
+  reply.status(Number(error.statusCode)).send({ error: error.toString });
+});
+
 app.get(
   "/",
   {

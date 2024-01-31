@@ -5,7 +5,7 @@ import { isAuthenticated } from "../middleware/authMiddleware";
 const createTodoSchema = {
   body: {
     type: "object",
-    required: ["title", "uid", "fid"], // Assuming these are the required fields
+    required: ["title", "fid"], // Assuming these are the required fields
     properties: {
       title: { type: "string" },
       description: { type: "string" },
@@ -21,9 +21,9 @@ const fetchTodoSchema = {
   querystring: {
     type: "object",
     properties: {
-      is_pinned: { type: "number" }, // Example query parameter
-      is_completed: { type: "number" }, // Example query parameter
-      color: { type: "string" }, // Another query parameter
+      is_pinned: { type: "number" },
+      is_completed: { type: "number" },
+      color: { type: "string" },
     },
   },
 };
